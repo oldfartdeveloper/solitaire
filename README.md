@@ -18,12 +18,22 @@
 ╰──────────────────────────────────────╯                                       
 ```
 
+## OldFartDeveloper's Intended Feature Changes
+
+> UNDER CONSTRUCTION!
+
+@ambuc's original effort is extremely useful as a strong start for what I'm trying to acheive.
+My intended changes are chronicled **[here](/doc/proposedFeatureChanges.md)**.
+
 ## Essay
+
 For more background on this project, [read the blog
 post](https://jbuckland.com/2017/12/02/solitaire.html) I wrote about developing it.
 
 ## Prerequisites
+
 You'll need to install:
+
 - [haskell](https://www.haskell.org/platform/), a standardized, general-purpose
   purely functional programming language, with non-strict semantics and strong
   static typing.
@@ -31,8 +41,10 @@ You'll need to install:
   program for developing Haskell projects.
 
 ## Playing `solitaire`
+
 You can clone this repo and use `stack` to build and run the executable like so:
-```
+
+```zsh
 git clone https://github.com/ambuc/solitaire.git
 cd solitaire
 stack build
@@ -40,6 +52,7 @@ stack exec solitaire-exe
 ```
 
 ## Links
+
 - [brick](https://hackage.haskell.org/package/brick), a Haskell terminal user
   interface programming library.
   - [guide.rst](https://github.com/jtdaugherty/brick/blob/master/docs/guide.rst),
@@ -51,4 +64,3 @@ stack exec solitaire-exe
   which implements functional references.
   - [`Control.Lens.Tutorial`](https://hackage.haskell.org/package/lens-tutorial/docs/Control-Lens-Tutorial.html),
     a great tutorial for understanding and using Haskell lenses or microlenses 
-
