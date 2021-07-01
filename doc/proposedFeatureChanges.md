@@ -10,10 +10,18 @@ Ultimately, I simply want to display all the of the cards in the *waste*, and no
 
 ### Show unrevealed cards in the tableau
 
-They should show their values but also reveal that they cannot be accessed them.
+They should show their values but also reveal that they cannot be accessed.
 
-## Second generation of changes TODO
+## Second generation of changes
 
-### First, display all the cards in the waste as wished for above.
+### Display all the cards in the waste as wished for above
+
+Specifically, I'd like to have a 4-column grid at the left:
+
+* The 4 suites are displayed across.
+* The 13 ranks are displayed vertically.
+* Each card in the waste is listed in its place in the grid.
+* A blank is left when the corresponding card is not in the waste.
+* I'm considering an optimization where ranks that have no cards in them are collapsed.  Perhaps could be enabled by a flag.
 
 ### Other TODO
