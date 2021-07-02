@@ -8,6 +8,7 @@ module Utils
   , newGame
   , toColor
   , undoMove
+  , maxDropCount
   ) where
 
 import Data.List.Split (splitPlaces)
@@ -93,6 +94,9 @@ hasWon s = length (s ^. field . found . traverse . cards) == 52
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 
+-- How many cards are turned over from the stock to the waste as a time
+maxDropCount = 1 :: Int
+
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
 mkInitS seed = GSt { _field = field 
@@ -117,9 +121,9 @@ mkInitS seed = GSt { _field = field
     waste =   Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- take 3 $ drop 28 deal 
+                                 | c <- take maxDropCount $ drop 28 deal 
                                  ]
-                   , _display  = Sp3 -- wastes only show their top three cards
+                   , _display  = Sp3 -- wastes only show their top maxDropCount cards
                    , _rankBias = Nothing
                    , _suitBias = Nothing
                    , _pileType = WasteP
