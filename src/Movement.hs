@@ -14,7 +14,7 @@ import Lens.Micro    ( Getting, Lens'
 import Lens.Micro.TH (makeLenses)
 
 import CardTypes
-import Utils     (canPlace)
+import Utils     (canPlace, maxDropCount)
 
 makeLenses ''DCard
 makeLenses ''Pile
@@ -55,8 +55,11 @@ foundLN n = lens (\f -> f ^. found ^?! ix n)
 inTableau :: Functor f0 => [(Pile -> f0 Pile) -> Field -> f0 Field]
 inTableau = map tableLN [0..6] 
 
+maxSuitOffset :: Int
+maxSuitOffset = 3
+
 inFoundation :: Functor f0 => [(Pile -> f0 Pile) -> Field -> f0 Field]
-inFoundation = map foundLN [0..3] 
+inFoundation = map foundLN [0..maxSuitOffset] 
 
 -- findSpot takes a list of pileLenses, a card, and a field and iterates thru
 -- the piles as derived from (field .^ pileLens) to see if the card can be
@@ -94,9 +97,9 @@ tryMove [StockX] f = (f',id)
         load = f ^. wasteL                                 
 
 tryMove [_, StockX] f = (f',id)
-  where f' = f & stockL %~ drop 3            --drop 3 from stock
-               & wasteL %~ (reverse load ++) --add 3 to waste
-        load = f ^. stockL & take 3          --get 3 from stock
+  where f' = f & stockL %~ drop maxDropCount            --drop n from stock
+               & wasteL %~ (reverse load ++)            --add n to waste
+        load = f ^. stockL & take maxDropCount          --get n from stock
 
 tryMove [DCX dc, IdX 0, WasteX] f
   | canMove 0 dc f = (f', scoreFn)

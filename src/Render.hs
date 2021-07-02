@@ -11,7 +11,7 @@ import Brick.Widgets.Core
 import Text.Printf                (printf)
 
 import CardTypes
-import Utils (toColor, hasWon)
+import Utils (toColor, hasWon, maxDropCount)
 
 -------------------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ rrPile :: Axis -> Pile -> Widget Ext -- renders a pile of cards
 rrPile axis p
   | null (_cards p)        = rrGhost p -- don't render an empty pile
   | _display p == Stacked  = rrDCard NS 0 (head $ _cards p) 
-  | _display p == Sp3      = rrDCards axis $ reverse $ take 3 $ _cards p
+  | _display p == Sp3      = rrDCards axis $ reverse $ take maxDropCount $ _cards p
   | _display p == Splayed  = rrDCards axis $ reverse $          _cards p
   | otherwise              = str "!!" -- shouldn't happen
 

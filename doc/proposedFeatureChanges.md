@@ -6,7 +6,8 @@
 
 This will bring this game into closer alignment with my objectives of teaching this program how to play Solitaire w/o having to worry about the 3-card turn.
 
-Ultimately, I simply want to display all the of the cards in the *waste*, and not have a *stock* at all.
+* DONE! This will bring this game into closer alignment with my objectives of teaching this program how to play Solitaire w/o having to worry about the 3-card turn.
+* Ultimately, I simply want to display all the of the cards in the *waste*, and not have a *stock* at all.
 
 ### Show unrevealed cards in the tableau
 
