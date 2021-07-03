@@ -29,18 +29,6 @@ rrGhost _ = withBorderStyle ghostRounded $ border $ str "  "
           , bsHorizontal    = ' '           , bsVertical      = ' '
           }
 
--- Renders a 'ghost' card except its value is actually shown.
-rrGhost' :: Pile -> Widget Ext -- renders a 'ghost' card with no content
-rrGhost' _ = withBorderStyle ghostRounded $ border $ str "  "
-  where ghostRounded = BorderStyle 
-          { bsIntersectFull = toEnum 0x253C
-          , bsCornerTL      = toEnum 0x256D , bsCornerTR      = toEnum 0x256E
-          , bsCornerBR      = toEnum 0x256F , bsCornerBL      = toEnum 0x2570
-          , bsIntersectL    = toEnum 0x251C , bsIntersectR    = toEnum 0x2524
-          , bsIntersectT    = toEnum 0x252C , bsIntersectB    = toEnum 0x2534
-          , bsHorizontal    = ' '           , bsVertical      = ' '
-          }
-
 rrDCard :: Axis -> Int -> DCard -> Widget Ext -- renders a displaycard.
 rrDCard axis idx dc = reportExtent (DCX dc)   -- by necessity displaycards
                     $ cropBy margin           -- are aware of their position
@@ -50,10 +38,11 @@ rrDCard axis idx dc = reportExtent (DCX dc)   -- by necessity displaycards
           where mkMargin :: Axis -> Int -> FaceDir -> Int
                 mkMargin _  0 _        = 0
                 mkMargin NS _ FaceUp   = 1
-                mkMargin NS _ FaceDown = 2
+                mkMargin NS _ FaceDown = 1 -- Scott: originally 2
                 mkMargin EW _ FaceUp   = 1
-                mkMargin EW _ FaceDown = 3
-        inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc)
+                mkMargin EW _ FaceDown = 3 
+        -- inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc) -- this hides the card value
+        inner  = Just (_card dc)                                                 -- this always shows it
 
 rrCard :: Maybe Card -> Widget Ext               -- renders card internals
 rrCard Nothing           = withAttr (attrName "bold")

@@ -13,6 +13,12 @@ This will bring this game into closer alignment with my objectives of teaching t
 
 STARTED 2021-7-2: They should show their values but also reveal that they cannot be accessed.
 
+After many false starts, this is where I am now:
+
+<img src="/doc/img/oldFacedown.jpg" alt="first attempt at rendering facedown" width="30%" height="30%">
+
+The above doesn't set off the face-up vs face-down status of the cards in the tableau very well.  My next try will be to remove any borders from the hidden cards altogether; see how that looks.
+
 ## Second generation of changes
 
 ### Display all the cards in the waste as wished for above
