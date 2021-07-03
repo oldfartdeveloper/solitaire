@@ -11,7 +11,7 @@ This will bring this game into closer alignment with my objectives of teaching t
 
 ### Show unrevealed cards in the tableau
 
-They should show their values but also reveal that they cannot be accessed.
+STARTED 2021-7-2: They should show their values but also reveal that they cannot be accessed.
 
 ## Second generation of changes
 

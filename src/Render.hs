@@ -29,6 +29,18 @@ rrGhost _ = withBorderStyle ghostRounded $ border $ str "  "
           , bsHorizontal    = ' '           , bsVertical      = ' '
           }
 
+-- Renders a 'ghost' card except its value is actually shown.
+rrGhost' :: Pile -> Widget Ext -- renders a 'ghost' card with no content
+rrGhost' _ = withBorderStyle ghostRounded $ border $ str "  "
+  where ghostRounded = BorderStyle 
+          { bsIntersectFull = toEnum 0x253C
+          , bsCornerTL      = toEnum 0x256D , bsCornerTR      = toEnum 0x256E
+          , bsCornerBR      = toEnum 0x256F , bsCornerBL      = toEnum 0x2570
+          , bsIntersectL    = toEnum 0x251C , bsIntersectR    = toEnum 0x2524
+          , bsIntersectT    = toEnum 0x252C , bsIntersectB    = toEnum 0x2534
+          , bsHorizontal    = ' '           , bsVertical      = ' '
+          }
+
 rrDCard :: Axis -> Int -> DCard -> Widget Ext -- renders a displaycard.
 rrDCard axis idx dc = reportExtent (DCX dc)   -- by necessity displaycards
                     $ cropBy margin           -- are aware of their position
@@ -63,7 +75,7 @@ rrPile :: Axis -> Pile -> Widget Ext -- renders a pile of cards
 rrPile axis p
   | null (_cards p)        = rrGhost p -- don't render an empty pile
   | _display p == Stacked  = rrDCard NS 0 (head $ _cards p) 
-  | _display p == Sp3      = rrDCards axis $ reverse $ take maxDropCount $ _cards p
+  | _display p == SpDrop      = rrDCards axis $ reverse $ take maxDropCount $ _cards p
   | _display p == Splayed  = rrDCards axis $ reverse $          _cards p
   | otherwise              = str "!!" -- shouldn't happen
 
@@ -78,9 +90,7 @@ mkButton :: Action -> Widget Ext
 mkButton action = reportExtent (ActionX action)
                 $ padBottom (Pad 1)
                 $ str "[" <+> 
-                ( withAttr (attrName "btnAttr")
-                $ str (show action)
-                ) <+> str "]"
+                withAttr (attrName "btnAttr") (str (show action)) <+> str "]"
 
 scoreBox :: Int -> Widget Ext
 scoreBox i = padBottom (Pad 1)

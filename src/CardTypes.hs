@@ -43,7 +43,7 @@ data FaceDir     = FaceUp | FaceDown                 deriving (Eq, Show, Ord)
 data DCard       = DCard { _card    :: Card
                          , _facedir :: FaceDir }     deriving (Eq, Show, Ord)
 
-data DisplayMode = Stacked | Splayed | Sp3           deriving (Eq, Show, Ord)
+data DisplayMode = Stacked | Splayed | SpDrop           deriving (Eq, Show, Ord)
 
 data PileType    = StockP | WasteP | TableP | FoundP deriving (Eq, Show, Ord)
 

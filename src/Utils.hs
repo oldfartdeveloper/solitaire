@@ -123,7 +123,7 @@ mkInitS seed = GSt { _field = field
                                          } 
                                  | c <- take maxDropCount $ drop 28 deal 
                                  ]
-                   , _display  = Sp3 -- wastes only show their top maxDropCount cards
+                   , _display  = SpDrop -- wastes only show their top maxDropCount cards
                    , _rankBias = Nothing
                    , _suitBias = Nothing
                    , _pileType = WasteP
