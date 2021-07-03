@@ -50,10 +50,11 @@ rrDCard axis idx dc = reportExtent (DCX dc)   -- by necessity displaycards
           where mkMargin :: Axis -> Int -> FaceDir -> Int
                 mkMargin _  0 _        = 0
                 mkMargin NS _ FaceUp   = 1
-                mkMargin NS _ FaceDown = 2
+                mkMargin NS _ FaceDown = 1 -- originally 2
                 mkMargin EW _ FaceUp   = 1
-                mkMargin EW _ FaceDown = 3
-        inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc)
+                mkMargin EW _ FaceDown = 3 -- originally 3
+        -- inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc) -- this hides the card value
+        inner  = Just (_card dc)                                                 -- this always shows it
 
 rrCard :: Maybe Card -> Widget Ext               -- renders card internals
 rrCard Nothing           = withAttr (attrName "bold")
