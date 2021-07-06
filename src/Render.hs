@@ -5,7 +5,7 @@ module Render
 import Brick.AttrMap              (attrName)
 import Brick.Types                (Widget, Padding(Pad))
 import Brick.Widgets.Border       (vBorder, border, borderWithLabel)
-import Brick.Widgets.Border.Style 
+import Brick.Widgets.Border.Style
 import Brick.Widgets.Center       (center)
 import Brick.Widgets.Core
 import Text.Printf                (printf)
@@ -15,8 +15,13 @@ import Utils (toColor, hasWon, maxDropCount)
 
 -------------------------------------------------------------------------------
 
-cardStyle :: Widget Ext -> Widget Ext -- borderwithstyle wrapper
-cardStyle = withBorderStyle unicodeRounded . border 
+cardStyle :: FaceDir -> Widget Ext -> Widget Ext -- borderwithstyle wrapper
+cardStyle faceDir =
+  withBorderStyle 
+    ( case faceDir of
+        FaceDown -> borderStyleFromChar ' '   -- no border
+        FaceUp   -> unicodeRounded            -- rounded border
+    ) . border
 
 rrGhost :: Pile -> Widget Ext -- renders a 'ghost' card with no content
 rrGhost _ = withBorderStyle ghostRounded $ border $ str "  "
@@ -29,10 +34,10 @@ rrGhost _ = withBorderStyle ghostRounded $ border $ str "  "
           , bsHorizontal    = ' '           , bsVertical      = ' '
           }
 
-rrDCard :: Axis -> Int -> DCard -> Widget Ext -- renders a displaycard.
-rrDCard axis idx dc = reportExtent (DCX dc)   -- by necessity displaycards
-                    $ cropBy margin           -- are aware of their position
-                    $ rrCard inner            -- within a splayed pile.
+rrDCard :: Axis -> Int -> DCard -> Widget Ext     -- renders a displaycard.
+rrDCard axis idx dc = reportExtent (DCX dc)       -- by necessity displaycards
+                    $ cropBy margin               -- are aware of their position
+                    $ rrCard (_facedir dc) inner  -- within a splayed pile.
   where cropBy = if axis == NS then cropBottomBy else cropRightBy 
         margin = mkMargin axis idx (_facedir dc)
           where mkMargin :: Axis -> Int -> FaceDir -> Int
@@ -41,15 +46,15 @@ rrDCard axis idx dc = reportExtent (DCX dc)   -- by necessity displaycards
                 mkMargin NS _ FaceDown = 1 -- Scott: originally 2
                 mkMargin EW _ FaceUp   = 1
                 mkMargin EW _ FaceDown = 3 
-        -- inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc) -- this hides the card value
-        inner  = Just (_card dc)                                                 -- this always shows it
+        -- inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc) -- this hides the card value for facedown 
+        inner  = Just (_card dc) -- this hides the card value for facedown 
 
-rrCard :: Maybe Card -> Widget Ext               -- renders card internals
-rrCard Nothing           = withAttr (attrName "bold")
-                         $ cardStyle             -- either a card back
-                         $ str ([toEnum 0x03BB, '='] :: String)
-rrCard (Just (Card r s)) = withAttr (attrName c) -- or a card front.
-                         $ cardStyle $ str $ show r ++ show s
+rrCard :: FaceDir -> Maybe Card -> Widget Ext               -- renders card internals
+rrCard _ Nothing         = withAttr (attrName "bold")
+                         $ withBorderStyle unicodeRounded             -- either a card back
+                         $ str ([' ', toEnum 0x03BB, '='] :: String)
+rrCard faceDir (Just (Card r s)) = withAttr (attrName c) -- or a card front.
+                         $ cardStyle faceDir $ str $ show r ++ show s
   where c = if Red == toColor s then "redCard" else "blackCard"
 
 rrDCards :: Axis -> [DCard] -> Widget Ext -- renders a pile of displaycards
