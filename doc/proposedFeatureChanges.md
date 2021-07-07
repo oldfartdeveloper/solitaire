@@ -23,7 +23,7 @@ The above doesn't set off the face-up vs face-down status of the cards in the ta
 
 Check this out:
 
-<img src="/doc/img/newFacedown.png" alt="better attempt at rendering facedown" width="30%" height="30%">
+<img src="/doc/img/newFaceDown.png" alt="better attempt at rendering facedown" width="30%" height="30%">
 
 ## Second generation of changes
 
