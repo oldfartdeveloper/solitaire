@@ -19,6 +19,12 @@ After many false starts, this is where I am now:
 
 The above doesn't set off the face-up vs face-down status of the cards in the tableau very well.  My next try will be to remove any borders from the hidden cards altogether; see how that looks.
 
+#### Better Look for Tableau:
+
+Check this out:
+
+<img src="/doc/img/newFaceDown.png" alt="better attempt at rendering facedown" width="30%" height="30%">
+
 ## Second generation of changes
 
 ### Display all the cards in the waste as wished for above
