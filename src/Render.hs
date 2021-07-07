@@ -46,8 +46,7 @@ rrDCard axis idx dc = reportExtent (DCX dc)       -- by necessity displaycards
                 mkMargin NS _ FaceDown = 1 -- Scott: originally 2
                 mkMargin EW _ FaceUp   = 1
                 mkMargin EW _ FaceDown = 3 
-        -- inner  = if _facedir dc == FaceDown then Nothing else Just (_card dc) -- this hides the card value for facedown 
-        inner  = Just (_card dc) -- this hides the card value for facedown 
+        inner  = Just (_card dc) -- this shows the card value for faceup 
 
 rrCard :: FaceDir -> Maybe Card -> Widget Ext               -- renders card internals
 rrCard _ Nothing         = withAttr (attrName "bold")
