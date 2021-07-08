@@ -37,4 +37,12 @@ Specifically, I'd like to have a 4-column grid at the left:
 * A blank is left when the corresponding card is not in the waste.
 * I'm considering an optimization where ranks that have no cards in them are collapsed.  Perhaps could be enabled by a flag.
 
+#### Progress
+
+1. Combining Stock and Waste into Waste.
+  * Remove `stock` and dependent variables.
+  * `waste` pile now splayed. 
+
 ### Other TODO
+
+1.  Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).
