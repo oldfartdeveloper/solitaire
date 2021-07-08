@@ -2,6 +2,7 @@
 
 module Utils
   ( canPlace
+  , deckCardCount
   , hasWon
   , initialDeal
   , mkInitS
@@ -93,6 +94,13 @@ hasWon s = length (s ^. field . found . traverse . cards) == 52
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 
+-- how many cards are in a deck (52 actually)
+deckCardCount :: Int
+deckCardCount = (1 + fromEnum (maxBound :: Rank)) * (1 + fromEnum (maxBound :: Suit))
+
+inititalTableauCardCount :: Int
+inititalTableauCardCount = 28
+
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
 mkInitS seed = GSt { _field = field 
@@ -100,14 +108,14 @@ mkInitS seed = GSt { _field = field
                    , _score = 0     , _moves = 0
                    }
   where
-    deal  = R.shuffle' initialDeal 52 seed -- ...by shuffling the initialDeal
+    deal  = R.shuffle' initialDeal deckCardCount seed -- ...by shuffling the initialDeal
     field = Field { _waste = waste         -- and doling it out amongst
                   , _table = table, _found = found -- waste, tableau
                   }
     waste = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- drop 28 deal -- last 24 cards in deck
+                                 | c <- drop inititalTableauCardCount deal -- last 24 cards in deck
                                  ]
                    , _display  = Splayed -- shows cards within the waste faceup.
                    , _rankBias = Nothing
