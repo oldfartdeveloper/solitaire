@@ -14,7 +14,7 @@ import Lens.Micro    ( Getting, Lens'
 import Lens.Micro.TH (makeLenses)
 
 import CardTypes
-import Utils     (canPlace, maxDropCount)
+import Utils     (canPlace)
 
 makeLenses ''DCard
 makeLenses ''Pile
@@ -23,17 +23,11 @@ makeLenses ''Field
 
 --------------------------------------------------------------------------------
 
--- creates a lens from the field to the stock
--- operates on lists of displaycards
-stockL :: Lens' Field [DCard] --all
-stockL = lens (\f -> f ^. stock.cards & each.facedir .~ FaceUp)               
-              (\f dcs -> f & stock.cards .~ (dcs & each.facedir .~ FaceDown)) 
-
 -- creates a lens from the field to the waste
--- operates on lists of displaycards
-wasteL :: Lens' Field [DCard]
-wasteL = lens (\f -> f ^. waste.cards)           
-              (\f dcs -> f & waste.cards .~ dcs) 
+-- operates on piles
+wasteL :: Int -> Lens' Field Pile
+wasteL n = lens (\f -> f ^. waste ^?! ix n)           
+              (\f p -> f & waste . ix n .~ p) 
 
 -- creates a lens from the field to an indexed tableau column
 -- operates on piles
@@ -48,7 +42,7 @@ foundLN n = lens (\f -> f ^. found ^?! ix n)
                  (\f p -> f & found . ix n .~ p) 
 
 --------------------------------------------------------------------------------
--- data PileType    = StockP | WasteP | TableP | FoundP deriving (Eq, Show, Ord)
+-- data PileType    = WasteP | TableP | FoundP deriving (Eq, Show, Ord)
 
 -- returns a list of [Lens' Field Pile], or pileLenses, which can be used in a
 -- construction like (field .^ pileLens).
@@ -82,34 +76,24 @@ mkSpot pLs c f = fromJust $ findSpot pLs c f
 
 -- takes a field and returns an updated field with the next move applied, if
 -- possible. defaults to returning the same field. To be used by (.~), not (%~).
--- * clicking the empty stockX recalls the entire waste
--- * clicking a non-empty stockX moves 3 or less cards from stock to waste
--- * clicking a top waste card tries a move to the tableau or foundation
+-- * clicking any waste card tries a move to the tableau or foundation
 -- * clicking a top foundation card tries a move to the tableau
 -- * clicking any tableau card tries a move to the tableau or foundation,
 --   depending on row
 
 tryMove :: [Ext] -> Field -> (Field, Int->Int)
 
-tryMove [StockX] f = (f',id)
-  where f' = f & stockL %~ (reverse load ++)
-               & wasteL .~ []
-        load = f ^. wasteL                                 
-
-tryMove [_, StockX] f = (f',id)
-  where f' = f & stockL %~ drop maxDropCount            --drop n from stock
-               & wasteL %~ (reverse load ++)            --add n to waste
-        load = f ^. stockL & take maxDropCount          --get n from stock
-
-tryMove [DCX dc, IdX 0, WasteX] f
-  | canMove 0 dc f = (f', scoreFn)
-  | otherwise      = (f , id)
-  where (moveL, pType) = mkMoveL 0 (dc ^. card) f
-        f'             = f & moveL . cards %~ (dc:) --write 1 to _
-                           & wasteL %~ drop 1       --drop 1 from waste
-        scoreFn
-          | pType == FoundP = (+10)
-          | otherwise       = (+5)
+-- Scott: modify below to only move if the card is in the mouse location
+-- (presuming detecting the card doesn't happen here.)
+tryMove [DCX dc, IdX row, WasteX] f = (f , id)
+  -- | canMove row dc f = (f', scoreFn)
+  -- | otherwise      = (f , id)
+  -- where (moveL, pType) = mkMoveL 0 (dc ^. card) f
+        -- f'             = f & moveL . cards %~ (dc:) --write 1 to _
+                          --  & wasteL %~ drop 1       --drop 1 from waste
+        -- scoreFn
+          -- | pType == FoundP = (+10)
+          -- | otherwise       = (+5)
 
 tryMove [DCX dc, IdX row, FoundX] f
   | canMove row dc f = (f', scoreFn)

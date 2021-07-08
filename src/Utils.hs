@@ -8,7 +8,6 @@ module Utils
   , newGame
   , toColor
   , undoMove
-  , maxDropCount
   ) where
 
 import Data.List.Split (splitPlaces)
@@ -94,9 +93,6 @@ hasWon s = length (s ^. field . found . traverse . cards) == 52
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 
--- How many cards are turned over from the stock to the waste as a time
-maxDropCount = 1 :: Int
-
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
 mkInitS seed = GSt { _field = field 
@@ -105,29 +101,21 @@ mkInitS seed = GSt { _field = field
                    }
   where
     deal  = R.shuffle' initialDeal 52 seed -- ...by shuffling the initialDeal
-    field = Field { _stock = stock, _waste = waste -- and doling it out amongst
-                  , _table = table, _found = found -- the stock, waste, tableau
+    field = Field { _waste = waste         -- and doling it out amongst
+                  , _table = table, _found = found -- waste, tableau
                   }
-    stock =   Pile { _cards    = [ DCard { _card    = c
-                                         , _facedir = FaceDown 
-                                         } 
-                                 | c <- drop 31 deal 
-                                 ]
-                   , _display  = Stacked
-                   , _rankBias = Nothing
-                   , _suitBias = Nothing
-                   , _pileType = StockP
-                   }
-    waste =   Pile { _cards    = [ DCard { _card    = c
+    waste = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- take maxDropCount $ drop 28 deal 
+                                 | c <- drop 28 deal -- last 24 cards in deck
                                  ]
-                   , _display  = SpDrop -- wastes only show their top maxDropCount cards
+                   , _display  = Splayed -- shows cards within the waste faceup.
                    , _rankBias = Nothing
                    , _suitBias = Nothing
                    , _pileType = WasteP
                    }
+            | cs <- splitPlaces [13, 13, 13, 13] deal -- Scott: deal is temporary
+            ]
     table = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = d
                                          } 

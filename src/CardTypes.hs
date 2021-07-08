@@ -43,9 +43,9 @@ data FaceDir     = FaceUp | FaceDown                 deriving (Eq, Show, Ord)
 data DCard       = DCard { _card    :: Card
                          , _facedir :: FaceDir }     deriving (Eq, Show, Ord)
 
-data DisplayMode = Stacked | Splayed | SpDrop           deriving (Eq, Show, Ord)
+data DisplayMode = Stacked | Splayed                 deriving (Eq, Show, Ord)
 
-data PileType    = StockP | WasteP | TableP | FoundP deriving (Eq, Show, Ord)
+data PileType    = WasteP | TableP | FoundP deriving (Eq, Show, Ord)
 
 data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
                  , _display  :: DisplayMode -- , opinions on how to be drawn
@@ -56,15 +56,14 @@ data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
 
 -- GAME TYPES ------------------------------------------------------------------
 
-data Field = Field { _stock :: Pile      -- fields are game wrappers for the
-                   , _waste :: Pile      -- four board components
-                   , _table :: [Pile]
+data Field = Field { _waste :: [Pile]      -- fields are game wrappers for the
+                   , _table :: [Pile]      -- three board components
                    , _found :: [Pile]
                    } deriving (Eq, Show)
 
-                                      --   the gamestate is a record for the
-data GSt = GSt { _field   :: Field    --   field as seen above
-               , _seed    :: R.StdGen -- , and a random seed to be passed thru
+                                             --   the gamestate is a record for the
+data GSt = GSt { _field   :: Field           --   field as seen above
+               , _seed    :: R.StdGen        -- , and a random seed to be passed thru
                , _history :: [(Field, Int)]  -- , and a list of previous fields
                , _score   :: Int
                , _moves   :: Int
@@ -78,6 +77,6 @@ data Axis = NS | EW deriving (Eq, Show) -- data type for pile splay orientation
 
 data Action = New | Undo deriving (Eq, Show, Ord) -- data type for button action
 
-data Ext = StockX | WasteX | TableX | FoundX -- named extents for click regions
+data Ext = WasteX | TableX | FoundX -- named extents for click regions
          | IdX Int | DCX DCard | ActionX Action
   deriving (Eq, Show, Ord)

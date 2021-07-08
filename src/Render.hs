@@ -11,17 +11,23 @@ import Brick.Widgets.Core
 import Text.Printf                (printf)
 
 import CardTypes
-import Utils (toColor, hasWon, maxDropCount)
+import Utils (toColor, hasWon)
 
 -------------------------------------------------------------------------------
+
+noBorder :: BorderStyle
+noBorder = borderStyleFromChar ' '
 
 cardStyle :: FaceDir -> Widget Ext -> Widget Ext -- borderwithstyle wrapper
 cardStyle faceDir =
   withBorderStyle 
     ( case faceDir of
-        FaceDown -> borderStyleFromChar ' '   -- no border
-        FaceUp   -> unicodeRounded            -- rounded border
+        FaceDown -> noBorder
+        FaceUp   -> unicodeRounded
     ) . border
+
+-- rrInvisible :: Pile -> Widget Ext -- renders all background color
+-- rrInvisible _ = noBorder $ border $ str "  "
 
 rrGhost :: Pile -> Widget Ext -- renders a 'ghost' card with no content
 rrGhost _ = withBorderStyle ghostRounded $ border $ str "  "
@@ -68,7 +74,6 @@ rrPile :: Axis -> Pile -> Widget Ext -- renders a pile of cards
 rrPile axis p
   | null (_cards p)        = rrGhost p -- don't render an empty pile
   | _display p == Stacked  = rrDCard NS 0 (head $ _cards p) 
-  | _display p == SpDrop      = rrDCards axis $ reverse $ take maxDropCount $ _cards p
   | _display p == Splayed  = rrDCards axis $ reverse $          _cards p
   | otherwise              = str "!!" -- shouldn't happen
 
@@ -110,10 +115,9 @@ drawUI state = [ui]
              <=> vBox (map mkButton [New, Undo])
 
     drawField :: Field -> Widget Ext
-    drawField f = (stock <=> waste) <+> vBorder <+> tableau 
-                                    <+> vBorder <+> foundation
-      where stock      = reportExtent StockX $ rrPile     NS $ _stock f
-            waste      = reportExtent WasteX $ rrPile     NS $ _waste f
+    drawField f = waste <+> vBorder <+> tableau 
+                        <+> vBorder <+> foundation
+      where waste      = reportExtent WasteX $ rrPiles EW NS $ _waste f
             tableau    = reportExtent TableX $ rrPiles EW NS $ _table f
             foundation = reportExtent FoundX $ rrPiles NS NS $ _found f
 
