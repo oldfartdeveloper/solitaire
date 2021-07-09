@@ -40,8 +40,13 @@ Specifically, I'd like to have a 4-column grid at the left:
 #### Progress
 
 1. Combining Stock and Waste into Waste.
-  * Remove `stock` and dependent variables.
-  * `waste` pile now splayed. 
+
+    * Remove `stock` and dependent variables.
+    * `waste` pile now splayed. 
+
+1. Rendering the "blank" spaces in the waste splayed is tricky; no resource in DCards to hold the status
+   for when the space should be blank.  Hence, try just not rendering anything at all for all 52 spots
+   and then fill in the actual cards as needed to overwrite the blanks.
 
 ### Other TODO
 
