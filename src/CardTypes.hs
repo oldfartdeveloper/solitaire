@@ -9,6 +9,7 @@ module CardTypes
   , FaceDir(..)
   , Field(..)
   , GSt(..)
+  , Matrix(..)
   , Pile(..)
   , PileType(..)
   , Rank(..) 
@@ -60,7 +61,7 @@ data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
                  } deriving (Eq, Show)      -- , since it makes canPlace simpler
 
 -- Like a pile, except for matrices which have additional non-card markers to manage
-newtype Matrix = Matrix { _positions :: [Position] } deriving (Show)
+newtype Matrix = Matrix { _positions :: [Position] } deriving (Eq,Show)
 
 -- GAME TYPES ------------------------------------------------------------------
 
