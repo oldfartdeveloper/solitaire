@@ -12,6 +12,7 @@ module CardTypes
   , Matrix(..)
   , Pile(..)
   , PileType(..)
+  , Position(..)
   , Rank(..) 
   , Suit(..)
   ) where
@@ -45,9 +46,8 @@ data DCard       = DCard { _card    :: Card
                          , _facedir :: FaceDir }     deriving (Eq, Show, Ord)
 
 -- For sparse matrices
-data Position    = Available { _dcard :: DCard}
-                 | Unavailable
-                      deriving (Eq, Show)
+data Position    = HaveCard { _dcard :: DCard}
+                 | NoCard deriving (Eq, Show)
 
 data DisplayMode = Stacked | Splayed                 deriving (Eq, Show, Ord)
 
@@ -61,7 +61,7 @@ data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
                  } deriving (Eq, Show)      -- , since it makes canPlace simpler
 
 -- Like a pile, except for matrices which have additional non-card markers to manage
-newtype Matrix = Matrix { _positions :: [Position] } deriving (Eq,Show)
+newtype Matrix = Matrix { _positions :: [[Position]] } deriving (Eq,Show)
 
 -- GAME TYPES ------------------------------------------------------------------
 

@@ -17,6 +17,7 @@ library
   exposed-modules:     CardTypes
                      , Movement
                      , Render
+                     , Sparse
                      , Utils
   build-depends:       base >= 4.7 && < 5
                      , brick == 0.26

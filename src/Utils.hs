@@ -7,6 +7,8 @@ module Utils
   , initialDeal
   , mkInitS
   , newGame
+  , ranksCount
+  , suitsCount
   , toColor
   , undoMove
   ) where
@@ -94,12 +96,21 @@ hasWon s = length (s ^. field . found . traverse . cards) == 52
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 
+suitsCount :: Int
+suitsCount = 1 + fromEnum (maxBound :: Suit)
+
+ranksCount :: Int
+ranksCount = 1 + fromEnum (maxBound :: Rank)
+
 -- how many cards are in a deck (52 actually)
 deckCardCount :: Int
-deckCardCount = (1 + fromEnum (maxBound :: Rank)) * (1 + fromEnum (maxBound :: Suit))
+deckCardCount = ranksCount * suitsCount
 
 inititalTableauCardCount :: Int
 inititalTableauCardCount = 28
+
+mkDeal :: R.StdGen -> [Card]
+mkDeal = R.shuffle' initialDeal deckCardCount
 
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
