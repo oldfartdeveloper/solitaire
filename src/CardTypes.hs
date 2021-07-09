@@ -43,6 +43,11 @@ data FaceDir     = FaceUp | FaceDown                 deriving (Eq, Show, Ord)
 data DCard       = DCard { _card    :: Card
                          , _facedir :: FaceDir }     deriving (Eq, Show, Ord)
 
+-- For sparse matrices
+data Position    = Available { _dcard :: DCard}
+                 | Unavailable
+                      deriving (Eq, Show)
+
 data DisplayMode = Stacked | Splayed                 deriving (Eq, Show, Ord)
 
 data PileType    = WasteP | TableP | FoundP deriving (Eq, Show, Ord)
@@ -53,6 +58,9 @@ data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
                  , _suitBias :: Maybe Suit  -- , possibly opinions on base suit
                  , _pileType :: PileType    -- , and an identifier for location
                  } deriving (Eq, Show)      -- , since it makes canPlace simpler
+
+-- Like a pile, except for matrices which have additional non-card markers to manage
+newtype Matrix = Matrix { _positions :: [Position] } deriving (Show)
 
 -- GAME TYPES ------------------------------------------------------------------
 
