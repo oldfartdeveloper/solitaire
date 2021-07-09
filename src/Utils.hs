@@ -24,6 +24,7 @@ import CardTypes
 -------------------------------------------------------------------------------
 
 makeLenses ''DCard
+makeLenses ''Position
 makeLenses ''Pile
 makeLenses ''Field
 makeLenses ''GSt
@@ -38,31 +39,31 @@ toColor _     = Red
 canPlace :: Card -> Pile -> Bool -- says whether a card can be placed on a pile
 -- given an empty foundation pile, a card needs to match both biases
 canPlace (Card r  s ) Pile { _pileType = FoundP
-                           , _cards    = []
+                           , _positions    = []
                            , _rankBias = Just rb
                            , _suitBias = Just sb
                            } = (r == rb) && (s == sb)
 -- nonempty foundation piles reject aces
 canPlace (Card RA _ ) Pile { _pileType = FoundP
-                           , _cards    = (dc:_)
+                           , _positions = (dc:_)
                            } = False
 -- nonempty foundation piles accept cards if they match suit and ascend rank
 canPlace (Card r  s ) Pile { _pileType = FoundP
-                           , _cards    = (DCard{_card=Card r' s'}:_)
+                           , _positions = HaveCard {_dcard = DCard{_card=Card r' s'}:_}:_
                            , _suitBias = Just sb
                            } = (pred r == r') && (s == sb)
 -- given an empty tableau pile, a card needs to match its rankbias
 canPlace (Card r  _ ) Pile { _pileType = TableP
-                           , _cards    = []
+                           , _positions = []
                            , _rankBias = Just rb
                            } = r == rb
 -- nonempty tableau piles reject kings
 canPlace (Card RK _ ) Pile { _pileType = TableP
-                           , _cards    = (dc:_)
+                           , _positions = (dc:_)
                            } = False
 -- nonempty tableau piles accept cards if they alternate color and descend rank
 canPlace (Card r  s ) Pile { _pileType = TableP
-                           , _cards    = (DCard{_card=Card r' s'}:_)
+                           , _positions = HaveCard {_dcard = DCard{_card=Card r' s'}:_}:_
                            , _rankBias = Just rb
                            } = (succ r == r') && (toColor s /= toColor s')
 canPlace _ _ = False -- if not covered above, default invalid
@@ -123,11 +124,11 @@ mkInitS seed = GSt { _field = field
     field = Field { _waste = waste         -- and doling it out amongst
                   , _table = table, _found = found -- waste, tableau
                   }
-    waste = [ Pile { _cards    = [ DCard { _card    = c
+    waste = [ Pile { _positions = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- drop inititalTableauCardCount deal -- last 24 cards in deck
-                                 ]
+                                  | c <- drop inititalTableauCardCount deal -- last 24 cards in deck
+                                  ]
                    , _display  = Splayed -- shows cards within the waste faceup.
                    , _rankBias = Nothing
                    , _suitBias = Nothing
@@ -135,11 +136,11 @@ mkInitS seed = GSt { _field = field
                    }
             | cs <- splitPlaces [13, 13, 13, 13] deal -- Scott: deal is temporary
             ]
-    table = [ Pile { _cards    = [ DCard { _card    = c
+    table = [ Pile { _positions = [ DCard { _card    = c
                                          , _facedir = d
                                          } 
-                                 | (c,d) <- zip cs (FaceUp:repeat FaceDown) 
-                                 ]
+                                  | (c,d) <- zip cs (FaceUp:repeat FaceDown) 
+                                  ]
                    , _display  = Splayed
                    , _rankBias = Just RK -- tableaus only accept base kings
                    , _suitBias = Nothing
@@ -147,7 +148,7 @@ mkInitS seed = GSt { _field = field
                    } 
             | cs <- splitPlaces [7,6..1] deal -- list of lists of lengths 7,6..
             ]
-    found = [ Pile { _cards    = []
+    found = [ Pile { _positions = []
                    , _display  = Stacked
                    , _rankBias = Just RA -- foundations only accept base aces
                    , _suitBias = Just s

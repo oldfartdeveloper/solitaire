@@ -4,9 +4,13 @@ import CardTypes
 import Utils
 
 sparseMatrix :: [Card] -> Matrix
-sparseMatrix cards = do-- Matrix { _positions = [[]] }
-  let positions = replicate suitsCount $ replicate ranksCount NoCard
+sparseMatrix cards = do 
+  Matrix { _positions = replicate suitsCount $ replicate ranksCount NoCard }
+      -- updatedPositions = fmapl populate positions cards
+    
 
-      suitOffsets = [0 .. fromEnum (maxBound :: Suit)]
-      rankOffsets = [0 .. fromEnum (maxBound :: Rank)]
-  Matrix {_positions = positions }
+      -- where populate ps cs = [[]]
+  
+
+-- populate :: [Card] -> [[Position]] -> [[Position]]
+-- populate card positions =

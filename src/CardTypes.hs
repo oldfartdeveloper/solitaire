@@ -9,7 +9,7 @@ module CardTypes
   , FaceDir(..)
   , Field(..)
   , GSt(..)
-  , Matrix(..)
+  -- , Matrix(..)
   , Pile(..)
   , PileType(..)
   , Position(..)
@@ -53,7 +53,7 @@ data DisplayMode = Stacked | Splayed                 deriving (Eq, Show, Ord)
 
 data PileType    = WasteP | TableP | FoundP deriving (Eq, Show, Ord)
 
-data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
+data Pile = Pile { _positions :: [Position]     --   piles contain positions
                  , _display  :: DisplayMode -- , opinions on how to be drawn
                  , _rankBias :: Maybe Rank  -- , possibly opinions on base rank
                  , _suitBias :: Maybe Suit  -- , possibly opinions on base suit
@@ -61,7 +61,7 @@ data Pile = Pile { _cards    :: [DCard]     --   piles contain cards
                  } deriving (Eq, Show)      -- , since it makes canPlace simpler
 
 -- Like a pile, except for matrices which have additional non-card markers to manage
-newtype Matrix = Matrix { _positions :: [[Position]] } deriving (Eq,Show)
+-- newtype Matrix = Matrix { _positions :: [[Position]] } deriving (Eq,Show)
 
 -- GAME TYPES ------------------------------------------------------------------
 
