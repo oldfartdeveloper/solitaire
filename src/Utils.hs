@@ -5,6 +5,7 @@ module Utils
   , deckCardCount
   , hasWon
   , initialDeal
+  , initialTableauCardCount
   , mkInitS
   , newGame
   , toColor
@@ -98,8 +99,8 @@ initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 deckCardCount :: Int
 deckCardCount = (1 + fromEnum (maxBound :: Rank)) * (1 + fromEnum (maxBound :: Suit))
 
-inititalTableauCardCount :: Int
-inititalTableauCardCount = 28
+initialTableauCardCount :: Int
+initialTableauCardCount = 28
 
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
@@ -115,14 +116,14 @@ mkInitS seed = GSt { _field = field
     waste = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- drop inititalTableauCardCount deal -- last 24 cards in deck
+                                 | c <- drop initialTableauCardCount deal -- last 24 cards in deck
                                  ]
                    , _display  = Splayed -- shows cards within the waste faceup.
                    , _rankBias = Nothing
                    , _suitBias = Nothing
                    , _pileType = WasteP
                    }
-            | cs <- splitPlaces [13, 13, 13, 13] deal -- Scott: deal is temporary
+            | cs <- splitPlaces [6, 6, 6, 6] (drop initialTableauCardCount deal)
             ]
     table = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = d

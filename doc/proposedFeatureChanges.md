@@ -29,24 +29,19 @@ Check this out:
 
 ### Display all the cards in the waste as wished for above
 
-Specifically, I'd like to have a 4-column grid at the left:
+Specifically, just sort the cards in the waste and display them across 6 rows of 4 items each.  When a card is moved out of the waste,
+remove its waste entry.
 
-* The 4 suites are displayed across.
-* The 13 ranks are displayed vertically.
-* Each card in the waste is listed in its place in the grid.
-* A blank is left when the corresponding card is not in the waste.
-* I'm considering an optimization where ranks that have no cards in them are collapsed.  Perhaps could be enabled by a flag.
+Here's what needs to be done:
 
-#### Progress
+1. DONE: Remove `stock` and dependent variables.
+1. Change 
+1. Be able to locate card in `waste` from mouse clickdown position.
+1. Be able to perform move testing and operation.
+1. All of this should be similar to present waste operation, just only over 4 lists, one for each suit.
+   This should be the easiest to implement.
 
-1. Combining Stock and Waste into Waste.
-
-    * Remove `stock` and dependent variables.
-    * `waste` pile now splayed. 
-
-1. Rendering the "blank" spaces in the waste splayed is tricky; no resource in DCards to hold the status
-   for when the space should be blank.  Hence, try just not rendering anything at all for all 52 spots
-   and then fill in the actual cards as needed to overwrite the blanks.
+Hence, the waste contains 4 piles, one for each suit.  Each pile is rendered as an `NS` vector growing down from the top.
 
 ### Other TODO
 
