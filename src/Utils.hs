@@ -109,8 +109,15 @@ initialWasteCardCount :: Int
 initialWasteCardCount = deckCardCount - initialTableauCardCount
 
 distributeCardsBySuitSorted :: [Card] -> [[Card]]
-distributeCardsBySuitSorted cards = [[],[],[],[]]
-
+distributeCardsBySuitSorted cards =
+-- [    foldl f [[],[],[],[]] cards
+--     where
+--         f stacks card@(Card r suit) = do
+--                 let offset = fromEnum suit
+--                     updatedStack = card : (stacks !! offset) -- adds card
+--                 stacks & element offset .~ updatedStack
+        [[], [], [], []]                
+    
 
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt

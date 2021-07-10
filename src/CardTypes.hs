@@ -28,13 +28,14 @@ instance Show Rank where
   show R10 = [toEnum 0x2491] :: String; -- unicode ligature for one-char width 
   show RJ  = "J"; show RQ  = "Q"; show RK  = "K";
 
-data Suit    = Spade | Heart | Club | Diamond 
+data Suit    = Club | Diamond | Heart | Spade 
   deriving (Eq, Ord, Bounded, Enum)
 instance Show Suit where
-  show Spade   = [toEnum 0x2660] :: String -- unicode characters for suits
-  show Heart   = [toEnum 0x2665] :: String
+  show Club    = [toEnum 0x2663] :: String -- unicode characters for suits
   show Diamond = [toEnum 0x2666] :: String 
-  show Club    = [toEnum 0x2663] :: String
+  show Heart   = [toEnum 0x2665] :: String
+  show Spade   = [toEnum 0x2660] :: String
+  
 
 data Card        = Card Rank Suit                    deriving (Eq, Show, Ord)
 
