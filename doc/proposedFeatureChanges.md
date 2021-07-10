@@ -35,13 +35,28 @@ remove its waste entry.
 Here's what needs to be done:
 
 1. DONE: Remove `stock` and dependent variables.
-1. Change 
-1. Be able to locate card in `waste` from mouse clickdown position.
-1. Be able to perform move testing and operation.
-1. All of this should be similar to present waste operation, just only over 4 lists, one for each suit.
+1. DONE: Change waste from `Sp3` to `Splayed`: will have have 4 columns, one for each suit
+1. DONE (Uses existing code): Be able to locate card in `waste` from mouse clickdown position.
+1. DONE (Uses existing code): Be able to perform move testing and operation.
+1. All of this should be similar to present waste operation, just only over 4 columns, one for each suit.
    This should be the easiest to implement.
 
 Hence, the waste contains 4 piles, one for each suit.  Each pile is rendered as an `NS` vector growing down from the top.
+
+#### Steps
+
+Make name changes
+| Module     | Var     | Type          | Old Name           | New Name   | Comments                                            |
+|:-----------|:--------|:--------------|:-------------------|:-----------|:----------------------------------------------------|
+| `CardType` |         | `DisplayMode` | `Sp3`              | *deleted*  | waste will use `Splayed` instead                    |
+| `CardType` |         | `PileType`    | `StockP`, `WasteP` | *deleted*  | waste will use `TableP` instead                     |
+| `CardType` |         | `Ext`         | `StockX`, `WasteX` | *deleted*  | (4 names required?) waste will use `TableX` instead |
+| `Utils`    | `stock` |               |                    | *deleted*  | No longer dealing cards facedown                    |
+| `Utils`    | `waste` |               |                    | *modified* | See "Utils waste" subsection below                  |
+
+##### Utils waste
+
+Basically need to configure `splitPlaces` call with 4 lengths reflecting number of clubs, diamonds, hearts, and spades respectively in 
 
 ### Other TODO
 

@@ -99,8 +99,18 @@ initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 deckCardCount :: Int
 deckCardCount = (1 + fromEnum (maxBound :: Rank)) * (1 + fromEnum (maxBound :: Suit))
 
+initialTableauCardDistribution :: [Int]
+initialTableauCardDistribution = [7,6..1]
+
 initialTableauCardCount :: Int
-initialTableauCardCount = 28
+initialTableauCardCount = sum initialTableauCardDistribution
+
+initialWasteCardCount :: Int
+initialWasteCardCount = deckCardCount - initialTableauCardCount
+
+distributeCardsBySuitSorted :: [Card] -> [[Card]]
+distributeCardsBySuitSorted cards = [[],[],[],[]]
+
 
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
@@ -110,20 +120,20 @@ mkInitS seed = GSt { _field = field
                    }
   where
     deal  = R.shuffle' initialDeal deckCardCount seed -- ...by shuffling the initialDeal
-    field = Field { _waste = waste         -- and doling it out amongst
-                  , _table = table, _found = found -- waste, tableau
+    field = Field { _waste = waste                 -- and doling it out amongst
+                  , _table = table, _found = found -- waste, tableau, and foundation
                   }
     waste = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- drop initialTableauCardCount deal -- last 24 cards in deck
+                                 | c <- cs
                                  ]
                    , _display  = Splayed -- shows cards within the waste faceup.
                    , _rankBias = Nothing
                    , _suitBias = Nothing
                    , _pileType = WasteP
                    }
-            | cs <- splitPlaces [6, 6, 6, 6] (drop initialTableauCardCount deal)
+            | cs <- distributeCardsBySuitSorted $ drop initialTableauCardCount deal
             ]
     table = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = d
@@ -135,7 +145,7 @@ mkInitS seed = GSt { _field = field
                    , _suitBias = Nothing
                    , _pileType = TableP
                    } 
-            | cs <- splitPlaces [7,6..1] deal -- list of lists of lengths 7,6..
+            | cs <- splitPlaces initialTableauCardDistribution deal -- list of lists of lengths 7,6..
             ]
     found = [ Pile { _cards    = []
                    , _display  = Stacked
@@ -144,4 +154,5 @@ mkInitS seed = GSt { _field = field
                    , _pileType = FoundP
                    } 
             | s <- allSuits ]
+ 
 
