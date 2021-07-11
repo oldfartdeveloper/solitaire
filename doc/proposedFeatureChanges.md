@@ -56,7 +56,17 @@ Make name changes
 
 ##### Utils waste
 
-Basically need to configure `splitPlaces` call with 4 lengths reflecting number of clubs, diamonds, hearts, and spades respectively in 
+Basically need to configure `splitPlaces` call with 4 lengths reflecting number of clubs, diamonds, hearts, and spades respectively in.
+
+##### Remaining Waste Bugs
+
+1. Clicking Ace in *waste* that is not at the bottom does not move to the *foundation*.
+1. Need to sort *waste* columns.
+1. Clicking a moveable card in the *waste* that is not at the bottom of its column correctly moves the card but removes the card at the bottom.  Hence, the moveable card is both in the *waste* and the *tableau*.  Am guessing that this is a missing feature in the Splayed
+feature: doesn't assume that clicking the middle of the tableau ever wants to move just the card clicked on.  I think I need a new
+`DisplayMode`.
+
+1) and 3) are probably the same problem.
 
 ### Other TODO
 

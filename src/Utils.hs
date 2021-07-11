@@ -12,6 +12,7 @@ module Utils
   , undoMove
   ) where
 
+import Data.List (sortBy)
 import Data.List.Split (splitPlaces)
 import Lens.Micro ( (^.), (%~), (&), (.~), (^?!), _head )
 import Lens.Micro.TH (makeLenses)
@@ -119,7 +120,11 @@ sortCardsBySuit cards = do
             diamonds = filter (\(Card _ s) -> s == Diamond) cards
             hearts = filter (\(Card _ s) -> s == Heart) cards
             spades = filter (\(Card _ s) -> s == Spade) cards
-        [clubs, diamonds, hearts, spades]
+        [ sort clubs    , sort diamonds    , sort hearts    , sort spades    ] 
+
+sort :: [Card] -> [Card]
+sort = sortBy compare  -- compare works probably because only the rank is 
+                       -- changing within a column; suit is constant.
 
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
