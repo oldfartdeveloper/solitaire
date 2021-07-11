@@ -29,10 +29,11 @@ Check this out:
 
 ### Display all the cards in the waste as wished for above
 
-Specifically, just sort the cards in the waste and display them across 6 rows of 4 items each.  When a card is moved out of the waste,
-remove its waste entry.
+Specifically, just sort the cards in the waste and display them across 4 columns each, one for each card suit.  When a card is moved out of the waste, remove its waste entry.  There is no further need for the *stock*, as all cards are always visible simultaneously.
 
-Here's what needs to be done:
+### Internal Changes
+
+Internally, Here's what needs to be done:
 
 1. DONE: Remove `stock` and dependent variables.
 1. DONE: Change waste from `Sp3` to `Splayed`: will have have 4 columns, one for each suit
@@ -43,22 +44,7 @@ Here's what needs to be done:
 
 Hence, the waste contains 4 piles, one for each suit.  Each pile is rendered as an `NS` vector growing down from the top.
 
-#### Steps
-
-Make name changes
-| Module     | Var     | Type          | Old Name           | New Name   | Comments                                            |
-|:-----------|:--------|:--------------|:-------------------|:-----------|:----------------------------------------------------|
-| `CardType` |         | `DisplayMode` | `Sp3`              | *deleted*  | waste will use `Splayed` instead                    |
-| `CardType` |         | `PileType`    | `StockP`, `WasteP` | *deleted*  | waste will use `TableP` instead                     |
-| `CardType` |         | `Ext`         | `StockX`, `WasteX` | *deleted*  | (4 names required?) waste will use `TableX` instead |
-| `Utils`    | `stock` |               |                    | *deleted*  | No longer dealing cards facedown                    |
-| `Utils`    | `waste` |               |                    | *modified* | See "Utils waste" subsection below                  |
-
-##### Utils waste
-
-Basically need to configure `splitPlaces` call with 4 lengths reflecting number of clubs, diamonds, hearts, and spades respectively in.
-
-##### Remaining Waste Bugs
+### Remaining Waste Bugs
 
 1. FIXED: Clicking Ace in *waste* that is not at the bottom does not move to the *foundation*. Fixed by after sorting, Ace is always
    at the bottom.
@@ -68,8 +54,8 @@ feature: doesn't assume that clicking the middle of the tableau ever wants to mo
 `DisplayMode`.
 1. FIXED: In tableau, when King and card below it were moved to empty tableau column, the card below was removed.
 
-1) and 3) are probably the same problem.
+## Other Desired Features
 
-### Other TODO
+TODO
 
-1.  Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).
+1. Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).
