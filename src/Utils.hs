@@ -109,15 +109,17 @@ initialWasteCardCount :: Int
 initialWasteCardCount = deckCardCount - initialTableauCardCount
 
 distributeCardsBySuitSorted :: [Card] -> [[Card]]
-distributeCardsBySuitSorted cards =
--- [    foldl f [[],[],[],[]] cards
---     where
---         f stacks card@(Card r suit) = do
---                 let offset = fromEnum suit
---                     updatedStack = card : (stacks !! offset) -- adds card
---                 stacks & element offset .~ updatedStack
-        [[], [], [], []]                
-    
+distributeCardsBySuitSorted =
+    sortCardsBySuit
+    -- [[], [], [], []]                
+
+sortCardsBySuit :: [Card] -> [[Card]]
+sortCardsBySuit cards = do
+        let clubs = filter (\(Card _ s) -> s == Club) cards
+            diamonds = filter (\(Card _ s) -> s == Diamond) cards
+            hearts = filter (\(Card _ s) -> s == Heart) cards
+            spades = filter (\(Card _ s) -> s == Spade) cards
+        [clubs, diamonds, hearts, spades]
 
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
