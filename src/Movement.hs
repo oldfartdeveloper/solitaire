@@ -55,6 +55,11 @@ inTableau = map tableLN [0..6]
 maxSuitOffset :: Int
 maxSuitOffset = 3
 
+remove :: Int -> [a] -> [a]
+remove _ [] = []
+remove 0 (x:xs) = xs
+remove n (x:xs) = x : remove (n-1) xs
+
 inFoundation :: Functor f0 => [(Pile -> f0 Pile) -> Field -> f0 Field]
 inFoundation = map foundLN [0..maxSuitOffset] 
 
@@ -93,7 +98,7 @@ tryMove [DCX dc, IdX row, IdX col, WasteX] f
         (moveL, pType) = mkMoveL row (dc ^. card) f
         f'             = f & moveL . cards %~ (dc:) --write 1 to _
                            & wasteLN col . cards
-                             %~ drop 1       --drop 1 from waste
+                            %~ remove row 
         scoreFn
           | pType == FoundP = (+10)
           | otherwise       = (+5)
@@ -103,7 +108,7 @@ tryMove [DCX dc, IdX row, IdX col, TableX] f
   | otherwise        = (f , id)
   where load = f ^. tableLN col . cards & take (succ row) 
         (moveL, pType) = mkMoveL row (dc ^. card) f
-        f'             = f & moveL . cards %~ (dc:) --write 1 to _
+        f'             = f & moveL . cards %~ (load++) --write 1 to _
                            & tableLN col . cards 
                               %~ drop (succ row)         --drop n from tableau
                            & tableLN col . cards . _head . facedir
