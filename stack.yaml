@@ -1,3 +1,7 @@
+extra-include-dirs:
+- /usr/local/opt/ncurses/include
+extra-lib-dirs:
+- /usr/local/opt/ncurses/lib
 flags: {}
 extra-package-dbs: []
 packages:

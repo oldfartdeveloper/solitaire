@@ -23,17 +23,11 @@ makeLenses ''Field
 
 --------------------------------------------------------------------------------
 
--- creates a lens from the field to the stock
--- operates on lists of displaycards
-stockL :: Lens' Field [DCard] --all
-stockL = lens (\f -> f ^. stock.cards & each.facedir .~ FaceUp)               
-              (\f dcs -> f & stock.cards .~ (dcs & each.facedir .~ FaceDown)) 
-
--- creates a lens from the field to the waste
--- operates on lists of displaycards
-wasteL :: Lens' Field [DCard]
-wasteL = lens (\f -> f ^. waste.cards)           
-              (\f dcs -> f & waste.cards .~ dcs) 
+-- creates a lens from the field to an indexed waste column
+-- operates on piles
+wasteLN :: Int -> Lens' Field Pile
+wasteLN n = lens (\f -> f ^. waste ^?! ix n)           
+                 (\f p -> f & waste . ix n .~ p) 
 
 -- creates a lens from the field to an indexed tableau column
 -- operates on piles
@@ -48,15 +42,26 @@ foundLN n = lens (\f -> f ^. found ^?! ix n)
                  (\f p -> f & found . ix n .~ p) 
 
 --------------------------------------------------------------------------------
--- data PileType    = StockP | WasteP | TableP | FoundP deriving (Eq, Show, Ord)
+-- data PileType    = WasteP | TableP | FoundP deriving (Eq, Show, Ord)
 
 -- returns a list of [Lens' Field Pile], or pileLenses, which can be used in a
 -- construction like (field .^ pileLens).
+inWaste :: Functor f0 => [(Pile -> f0 Pile) -> Field -> f0 Field]
+inWaste = map wasteLN [0..(fromEnum maxSuitOffset)] 
+
 inTableau :: Functor f0 => [(Pile -> f0 Pile) -> Field -> f0 Field]
 inTableau = map tableLN [0..6] 
 
+maxSuitOffset :: Int
+maxSuitOffset = 3
+
+remove :: Int -> [a] -> [a]
+remove _ [] = []
+remove 0 (x:xs) = xs
+remove n (x:xs) = x : remove (n-1) xs
+
 inFoundation :: Functor f0 => [(Pile -> f0 Pile) -> Field -> f0 Field]
-inFoundation = map foundLN [0..3] 
+inFoundation = map foundLN [0..maxSuitOffset] 
 
 -- findSpot takes a list of pileLenses, a card, and a field and iterates thru
 -- the piles as derived from (field .^ pileLens) to see if the card can be
@@ -79,33 +84,37 @@ mkSpot pLs c f = fromJust $ findSpot pLs c f
 
 -- takes a field and returns an updated field with the next move applied, if
 -- possible. defaults to returning the same field. To be used by (.~), not (%~).
--- * clicking the empty stockX recalls the entire waste
--- * clicking a non-empty stockX moves 3 or less cards from stock to waste
--- * clicking a top waste card tries a move to the tableau or foundation
+-- * clicking any waste card tries a move to the tableau or foundation
 -- * clicking a top foundation card tries a move to the tableau
 -- * clicking any tableau card tries a move to the tableau or foundation,
 --   depending on row
 
 tryMove :: [Ext] -> Field -> (Field, Int->Int)
 
-tryMove [StockX] f = (f',id)
-  where f' = f & stockL %~ (reverse load ++)
-               & wasteL .~ []
-        load = f ^. wasteL                                 
-
-tryMove [_, StockX] f = (f',id)
-  where f' = f & stockL %~ drop 3            --drop 3 from stock
-               & wasteL %~ (reverse load ++) --add 3 to waste
-        load = f ^. stockL & take 3          --get 3 from stock
-
-tryMove [DCX dc, IdX 0, WasteX] f
-  | canMove 0 dc f = (f', scoreFn)
+tryMove [DCX dc, IdX row, IdX col, WasteX] f
+  | canMove row dc f = (f', scoreFn)
   | otherwise      = (f , id)
-  where (moveL, pType) = mkMoveL 0 (dc ^. card) f
+  where load = f ^. wasteLN col . cards & take (succ row)
+        (moveL, pType) = mkMoveL row (dc ^. card) f
         f'             = f & moveL . cards %~ (dc:) --write 1 to _
-                           & wasteL %~ drop 1       --drop 1 from waste
+                           & wasteLN col . cards
+                            %~ remove row 
         scoreFn
           | pType == FoundP = (+10)
+          | otherwise       = (+5)
+
+tryMove [DCX dc, IdX row, IdX col, TableX] f
+  | canMove row dc f = (f', scoreFn)
+  | otherwise        = (f , id)
+  where load = f ^. tableLN col . cards & take (succ row) 
+        (moveL, pType) = mkMoveL row (dc ^. card) f
+        f'             = f & moveL . cards %~ (load++) --write 1 to _
+                           & tableLN col . cards 
+                              %~ drop (succ row)         --drop n from tableau
+                           & tableLN col . cards . _head . facedir
+                              .~ FaceUp                  --flip underlying card
+        scoreFn
+          | pType == FoundP = (+15)
           | otherwise       = (+5)
 
 tryMove [DCX dc, IdX row, FoundX] f
@@ -116,19 +125,6 @@ tryMove [DCX dc, IdX row, FoundX] f
                            & foundLN row . cards %~ drop 1 --drop 1 from found.
         scoreFn i = i - 15 
 
-tryMove [DCX dc, IdX row, IdX col, TableX] f
-  | canMove row dc f = (f', scoreFn)
-  | otherwise        = (f , id)
-  where load = f ^. tableLN col . cards & take (succ row) 
-        (moveL, pType) = mkMoveL row (dc ^. card) f
-        f'             = f & moveL . cards %~ (load++)   --write n to _
-                           & tableLN col . cards 
-                              %~ drop (succ row)         --drop n from tableau
-                           & tableLN col . cards . _head . facedir
-                              .~ FaceUp                  --flip underlying card
-        scoreFn
-          | pType == FoundP = (+15)
-          | otherwise       = (+5)
 tryMove _ f = (f,id)
 
 --------------------------------------------------------------------------------

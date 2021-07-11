@@ -2,14 +2,17 @@
 
 module Utils
   ( canPlace
+  , deckCardCount
   , hasWon
   , initialDeal
+  , initialTableauCardCount
   , mkInitS
   , newGame
   , toColor
   , undoMove
   ) where
 
+import Data.List (sortBy)
 import Data.List.Split (splitPlaces)
 import Lens.Micro ( (^.), (%~), (&), (.~), (^?!), _head )
 import Lens.Micro.TH (makeLenses)
@@ -93,6 +96,36 @@ hasWon s = length (s ^. field . found . traverse . cards) == 52
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
 
+-- how many cards are in a deck (52 actually)
+deckCardCount :: Int
+deckCardCount = (1 + fromEnum (maxBound :: Rank)) * (1 + fromEnum (maxBound :: Suit))
+
+initialTableauCardDistribution :: [Int]
+initialTableauCardDistribution = [7,6..1]
+
+initialTableauCardCount :: Int
+initialTableauCardCount = sum initialTableauCardDistribution
+
+initialWasteCardCount :: Int
+initialWasteCardCount = deckCardCount - initialTableauCardCount
+
+distributeCardsBySuitSorted :: [Card] -> [[Card]]
+distributeCardsBySuitSorted =
+    sortCardsBySuit
+    -- [[], [], [], []]                
+
+sortCardsBySuit :: [Card] -> [[Card]]
+sortCardsBySuit cards = do
+        let clubs = filter (\(Card _ s) -> s == Club) cards
+            diamonds = filter (\(Card _ s) -> s == Diamond) cards
+            hearts = filter (\(Card _ s) -> s == Heart) cards
+            spades = filter (\(Card _ s) -> s == Spade) cards
+        [ sort clubs    , sort diamonds    , sort hearts    , sort spades    ] 
+
+sort :: [Card] -> [Card]
+sort = sortBy compare  -- compare works probably because only the rank is 
+                       -- changing within a column; suit is constant.
+
 -- take a random generator and create a game state...
 mkInitS :: R.StdGen -> GSt
 mkInitS seed = GSt { _field = field 
@@ -100,30 +133,22 @@ mkInitS seed = GSt { _field = field
                    , _score = 0     , _moves = 0
                    }
   where
-    deal  = R.shuffle' initialDeal 52 seed -- ...by shuffling the initialDeal
-    field = Field { _stock = stock, _waste = waste -- and doling it out amongst
-                  , _table = table, _found = found -- the stock, waste, tableau
+    deal  = R.shuffle' initialDeal deckCardCount seed -- ...by shuffling the initialDeal
+    field = Field { _waste = waste                 -- and doling it out amongst
+                  , _table = table, _found = found -- waste, tableau, and foundation
                   }
-    stock =   Pile { _cards    = [ DCard { _card    = c
-                                         , _facedir = FaceDown 
-                                         } 
-                                 | c <- drop 31 deal 
-                                 ]
-                   , _display  = Stacked
-                   , _rankBias = Nothing
-                   , _suitBias = Nothing
-                   , _pileType = StockP
-                   }
-    waste =   Pile { _cards    = [ DCard { _card    = c
+    waste = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = FaceUp 
                                          } 
-                                 | c <- take 3 $ drop 28 deal 
+                                 | c <- cs
                                  ]
-                   , _display  = Sp3 -- wastes only show their top three cards
+                   , _display  = Splayed -- shows cards within the waste faceup.
                    , _rankBias = Nothing
                    , _suitBias = Nothing
                    , _pileType = WasteP
                    }
+            | cs <- distributeCardsBySuitSorted $ drop initialTableauCardCount deal
+            ]
     table = [ Pile { _cards    = [ DCard { _card    = c
                                          , _facedir = d
                                          } 
@@ -134,7 +159,7 @@ mkInitS seed = GSt { _field = field
                    , _suitBias = Nothing
                    , _pileType = TableP
                    } 
-            | cs <- splitPlaces [7,6..1] deal -- list of lists of lengths 7,6..
+            | cs <- splitPlaces initialTableauCardDistribution deal -- list of lists of lengths 7,6..
             ]
     found = [ Pile { _cards    = []
                    , _display  = Stacked
@@ -143,4 +168,5 @@ mkInitS seed = GSt { _field = field
                    , _pileType = FoundP
                    } 
             | s <- allSuits ]
+ 
 
