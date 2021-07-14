@@ -59,3 +59,9 @@ feature: doesn't assume that clicking the middle of the tableau ever wants to mo
 TODO
 
 1. Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).
+
+### Tactics
+
+Define tactics as intelligent key sequences to move cards around.  This is a primary strategy to have the game automate intelligent game playing.
+
+An idea: users will eventually start using tactics.  When a user manually uses a particular tactic, ask the user whether he'd like the intelligent command for the tactic as a shortcut.
