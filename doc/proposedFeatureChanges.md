@@ -58,10 +58,39 @@ feature: doesn't assume that clicking the middle of the tableau ever wants to mo
 
 TODO
 
-1. Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).
+1. Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position). *Okay, I've considered; bad idea for touchpad devices like smart phones.*
+
+### Upon randomizing the deal, immediately save it
+
+...and have a process for launching Solitaire with that deal.  Reason: We will probably want to repeat the game for any number of reasons:
+
+* testing
+* analysis
+* scoring difficulty.
+* distribute from web site when starting games.
+
+Which leads to...
+
+#### Dump undo history to obtain solution
+
+In order to be complete, we may have to dump it as a "redo" history.  I.e. add redo.
+
+### Announce game finished when no facedown cards in Tableau are left
+
+Which leaves a fun idea:
+
+#### Have button animate moving cards to Foundation
+
+Go wild with this one:
+
+1. Animate movement of cards like artillery.
+1. Animate explosions when cards land on their positions in the *Foundation*.
+1. Have broken pieces of anything fly out from the *Foundation*.
 
 ### Tactics
 
 Define tactics as intelligent key sequences to move cards around.  This is a primary strategy to have the game automate intelligent game playing.
 
 An idea: users will eventually start using tactics.  When a user manually uses a particular tactic, ask the user whether he'd like the intelligent command for the tactic as a shortcut.
+
+
