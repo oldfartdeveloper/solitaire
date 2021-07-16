@@ -76,3 +76,59 @@ Here are the *undo* moves back:
 Which takes us back to the original deal:
 
 <img src="LockedGame2S.png" width="70%" alt="Interesting game start" height="70%">
+
+And, here we start the game again:
+
+1. A♣️
+1. A♦️
+1. A♠️
+1. 2♠️
+1. 2♦️
+1. 2♣️
+1. 10♣️
+1. 9♦️
+1. 8♣️
+1. 4♣️ to 5♦️ (might be to 5❤️)
+1. 5❤️
+1. 7♦️
+1. 6♠️
+1. 9❤️
+1. J❤️
+1. 10♠️
+1. Q♣️
+1. 8♠️
+1. 3♠️
+1. 3❤️
+1. K♠️
+1. 9♠️
+1. 7♣️
+1. Q❤️
+1. J♣️
+1. 10❤️
+1. 6♦️
+1. 5♠️
+1. 4♦️
+1. 3♣️ (to 4♦️, not foundation)
+1. 2❤️
+1. K♣️
+1. Q♦️
+1. J♠️
+1. 10♦️
+1. 7❤️
+1. 6♣️
+1. 5♦️
+1. J♦️
+1. K♦️
+1. Q♠️
+1. 9♣️
+1. 8♦️
+1. 5♣️
+1. 4❤️
+1. 7♠️
+1. 6❤️
+
+Here's the final result:
+
+<img src="LockedGame2W2.png" width="70%" alt="Game success replay" height="70%">
+
+It's interesting as this is not quite the same result as the previous success result screen.  There's more than one road to Rome. 😬
