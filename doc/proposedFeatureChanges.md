@@ -56,9 +56,21 @@ feature: doesn't assume that clicking the middle of the tableau ever wants to mo
 
 ## Other Desired Features
 
-TODO
+### ~~Consider Using Keyboard Modifier Keys~~
 
-1. Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position). *Okay, I've considered; bad idea for touchpad devices like smart phones.*
+~~Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).~~ *Okay, I've considered; bad idea for touchpad devices like smart phones.*
+
+### Attempt to improve Haskell integration with VSCode
+
+Although I have all these Haskell plug-ins installed, much of the functionality doesn't seem to be working.  Would be worth a go-around to try to make it better.
+
+Also would be good to write up.
+
+### Update Naming
+
+Although I appreciate the original author's coding skill and design, I don't agree w/ his cryptic naming, especially because I think it make comprehension more challenging for newbie coders.
+
+Also, I think he truncated name lengths to make code formatting line up.
 
 ### Upon randomizing the deal, immediately save it
 
@@ -73,7 +85,7 @@ Which leads to...
 
 #### Dump undo history to obtain solution
 
-In order to be complete, we may have to dump it as a "redo" history.  I.e. add redo.
+In order to be complete, we may have to dump it as a "redo" history.  I.e. add redo.  Actually, the original author assembles this for *logging*; I should leverage what he's already done.
 
 ### Announce game finished when no facedown cards in Tableau are left
 
