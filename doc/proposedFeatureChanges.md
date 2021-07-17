@@ -77,6 +77,8 @@ In order to be complete, we may have to dump it as a "redo" history.  I.e. add r
 
 ### Announce game finished when no facedown cards in Tableau are left
 
+This is DONE!
+
 Which leaves a fun idea:
 
 #### Have button animate moving cards to Foundation

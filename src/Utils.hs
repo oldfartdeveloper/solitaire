@@ -12,7 +12,7 @@ module Utils
   , undoMove
   ) where
 
-import Data.List (sortBy)
+import Data.List (concat, sortBy)
 import Data.List.Split (splitPlaces)
 import Lens.Micro ( (^.), (%~), (&), (.~), (^?!), _head )
 import Lens.Micro.TH (makeLenses)
@@ -89,9 +89,17 @@ undoMove s = if hasHistory
   where (oldField, oldScore) = s ^. history ^?! _head -- assured if called
         hasHistory = not $ null $ s ^. history
 
--- if a game is won, all 52 cards are in the foundation
+-- if a game is won, there are no facedown cards in the tableau
 hasWon :: GSt -> Bool
-hasWon s = length (s ^. field . found . traverse . cards) == 52
+hasWon s = do
+  let cards = (s ^. field . table) >>= _cards
+  not (any (\c -> FaceDown == _facedir c) cards)
+
+-- hasWon s = 20 == length $ filter (\fd -> fd == FaceDown) (map  _facedir ((s ^. field . table) >>= _cards) )
+-- hasWon s = do
+--    let x = s ^. field . table . traverse . card
+--        l = length $ concat x
+--    20 == l
 
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
