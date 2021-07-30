@@ -46,10 +46,10 @@ You start the game by clicking cards with borders.  (Facedown cards in the *tabl
 
 The game layout is broken down from left to right:
 
-* The *waste* (there is no *stock*).  You don't to flip cards; you can move any card directly.
-* The *tableau* shows the "facedown" cards w/o borders.  You can see their values, but you cannot move them.
-* The *foundation* where you attempt to build each suit.
-* The *information panel* where you can see your score and manipulate the game.
+- The *waste* (there is no *stock*).  You don't to flip cards; you can move any card directly.
+- The *tableau* shows the "facedown" cards w/o borders.  You can see their values, but you cannot move them.
+- The *foundation* where you attempt to build each suit.
+- The *information panel* where you can see your score and manipulate the game.
 
 Note: if you find some of the cards on the right don't respond to mousedown, make your terimal window smaller.
 
@@ -65,4 +65,4 @@ Note: if you find some of the cards on the right don't respond to mousedown, mak
   the larger [`Control.Lens`](http://hackage.haskell.org/package/lens) library,
   which implements functional references.
   - [`Control.Lens.Tutorial`](https://hackage.haskell.org/package/lens-tutorial/docs/Control-Lens-Tutorial.html),
-    a great tutorial for understanding and using Haskell lenses or microlenses 
+    a great tutorial for understanding and using Haskell lenses or microlenses.
