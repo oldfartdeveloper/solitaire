@@ -12,7 +12,7 @@ module Utils
   , undoMove
   ) where
 
-import Data.List (sortBy)
+import Data.List (concat, sortBy)
 import Data.List.Split (splitPlaces)
 import Lens.Micro ( (^.), (%~), (&), (.~), (^?!), _head )
 import Lens.Micro.TH (makeLenses)
@@ -94,6 +94,12 @@ hasWon :: GSt -> Bool
 hasWon s = do
   let cards = (s ^. field . table) >>= _cards
   not (any (\card -> _facedir card == FaceDown) cards)
+
+-- hasWon s = 20 == length $ filter (\fd -> fd == FaceDown) (map  _facedir ((s ^. field . table) >>= _cards) )
+-- hasWon s = do
+--    let x = s ^. field . table . traverse . card
+--        l = length $ concat x
+--    20 == l
 
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]

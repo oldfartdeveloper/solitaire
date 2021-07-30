@@ -56,6 +56,55 @@ feature: doesn't assume that clicking the middle of the tableau ever wants to mo
 
 ## Other Desired Features
 
-TODO
+### ~~Consider Using Keyboard Modifier Keys~~
 
-1. Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).
+~~Consider using keyboard modifier keys to add functionality (such as pressing 'shift' to show available targets for the current terminal position).~~ *Okay, I've considered; bad idea for touchpad devices like smart phones.*
+
+### Attempt to improve Haskell integration with VSCode
+
+Although I have all these Haskell plug-ins installed, much of the functionality doesn't seem to be working.  Would be worth a go-around to try to make it better.
+
+Also would be good to write up.
+
+### Update Naming
+
+Although I appreciate the original author's coding skill and design, I don't agree w/ his cryptic naming, especially because I think it make comprehension more challenging for newbie coders.
+
+Also, I think he truncated name lengths to make code formatting line up.
+
+### Upon randomizing the deal, immediately save it
+
+...and have a process for launching Solitaire with that deal.  Reason: We will probably want to repeat the game for any number of reasons:
+
+* testing
+* analysis
+* scoring difficulty.
+* distribute from web site when starting games.
+
+Which leads to...
+
+#### Dump undo history to obtain solution
+
+In order to be complete, we may have to dump it as a "redo" history.  I.e. add redo.  Actually, the original author assembles this for *logging*; I should leverage what he's already done.
+
+### Announce game finished when no facedown cards in Tableau are left
+
+This is DONE!
+
+Which leaves a fun idea:
+
+#### Have button animate moving cards to Foundation
+
+Go wild with this one:
+
+1. Animate movement of cards like artillery.
+1. Animate explosions when cards land on their positions in the *Foundation*.
+1. Have broken pieces of anything fly out from the *Foundation*.
+
+### Tactics
+
+Define tactics as intelligent key sequences to move cards around.  This is a primary strategy to have the game automate intelligent game playing.
+
+An idea: users will eventually start using tactics.  When a user manually uses a particular tactic, ask the user whether he'd like the intelligent command for the tactic as a shortcut.
+
+

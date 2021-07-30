@@ -22,11 +22,11 @@ post](https://jbuckland.com/2017/12/02/solitaire.html) he wrote about developing
 
 ## Prerequisites
 
-You'll need to install:
+If you haven't already, you'll need to install:
 
 - [haskell](https://www.haskell.org/platform/), a standardized, general-purpose
   purely functional programming language, with non-strict semantics and strong
-  static typing.
+  static typing.  Use the **`ghcup`** procedue mentioned in this link.
 - [stack](https://docs.haskellstack.org/en/stable/README/), a cross-platform
   program for developing Haskell projects.
 
