@@ -89,9 +89,11 @@ undoMove s = if hasHistory
   where (oldField, oldScore) = s ^. history ^?! _head -- assured if called
         hasHistory = not $ null $ s ^. history
 
--- if a game is won, all 52 cards are in the foundation
+-- A game is won if there are no facedown cards in the tableau
 hasWon :: GSt -> Bool
-hasWon s = length (s ^. field . found . traverse . cards) == 52
+hasWon s = do
+  let cards = (s ^. field . table) >>= _cards
+  not (any (\card -> _facedir card == FaceDown) cards)
 
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
