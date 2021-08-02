@@ -105,7 +105,7 @@ drawUI state = [ui]
   where 
     ui = center $ setAvailableSize (120, 55) -- was 29
        $ board <+> rSidebar
-    title      = if hasWon state then " **** Nice! **** " else "    Solitaire    "
+    title      = if hasWon state then " !!! You Win !!! " else "    Solitaire    "
     board      = withBorderStyle unicodeRounded
                $ borderWithLabel (str title) 
                $ drawField $ _field state
