@@ -92,14 +92,21 @@ undoMove s = if hasHistory
 -- A game is won if there are no facedown cards in the tableau
 hasWon :: GSt -> Bool
 hasWon s = do
-  let cards = (s ^. field . table) >>= _cards
-  not (any (\card -> _facedir card == FaceDown) cards)
+  allTableauCardsFaceUp cards
+    where
+      cards                 = (s ^. field . table) >>= _cards
+      allTableauCardsFaceUp = all (\card -> _facedir card == FaceUp)
 
--- hasWon s = 20 == length $ filter (\fd -> fd == FaceDown) (map  _facedir ((s ^. field . table) >>= _cards) )
--- hasWon s = do
---    let x = s ^. field . table . traverse . card
---        l = length $ concat x
---    20 == l
+-- Use this instead of `hasWon` when testing the won-game appearance;
+-- only have to move one tableau card for the won-game appearance to execute
+hasWonTestOnly s =
+  hasMovedOneTableauCard cards
+    where
+      cards                        = (s ^. field . table) >>= _cards
+      hasMovedOneTableauCard kards = faceDownCardCountAfter1Play ==
+                                       length (filter cardIsFaceDown kards)
+      faceDownCardCountAfter1Play  = 20
+      cardIsFaceDown c             = FaceDown == _facedir c        
 
 -- the default deal is a sorted list of cards. to be shuffled below
 initialDeal = [ Card r s | r <- allRanks, s <- allSuits ]
