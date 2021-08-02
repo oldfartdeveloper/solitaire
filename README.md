@@ -1,5 +1,8 @@
 # solitaire.hs
 
+> HINT: branch "work" is currently the branch you should use if you want to work
+> with the most recent working version.
+
 <img src="/doc/img/ScottSolitaireScreenShot.png" alt="first attempt at rendering facedown" width="55%" height="55%">
 
 ## OldFartDeveloper's Intended Feature Changes
@@ -9,11 +12,14 @@
 @ambuc's original effort is extremely useful as a strong start for what I'm trying to acheive.
 My intended changes are chronicled **[here](/doc/proposedFeatureChanges.md)**.
 
-There are 2 finished features:
+There are the following finished features:
 
 1. The facedown cards in the *tableau* are now showing their values.  They still may not be moved while "facedown".
 1. The *stock*/*waste* pair has been simplifed to simply a *waste* since all cards are now displayed simultaniously
    in the *waste* alone. You may move any card in the *waste* to any valid location in the *tableau* or the *foundation*.
+1. Since if you reveal all the cards in the *tableau*, this effectively wins the game
+   since it is trivial to move all the remaining cards in the *waste* and *tableau* into the *foundation*.  Hence, the game now declares that you win as soon as there
+   are no facedown cards in the *tableau*.
 
 ## Essay
 
@@ -47,8 +53,8 @@ You start the game by clicking cards with borders.  (Facedown cards in the *tabl
 The game layout is broken down from left to right:
 
 - The *waste* (there is no *stock*).  You don't to flip cards; you can move any card directly.
-- The *tableau* shows the "facedown" cards w/o borders.  You can see their values, but you cannot move them.
-- The *foundation* where you attempt to build each suit.
+- The *tableau* shows the "facedown" cards w/o borders.  You can see their values, but you cannot move them.  You win the game when there are no longer any remaining "facedown" cards in the *tableau*.
+- The *foundation* where you build each suit.
 - The *information panel* where you can see your score and manipulate the game.
 
 Note: if you find some of the cards on the right don't respond to mousedown, make your terimal window smaller.

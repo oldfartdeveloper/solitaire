@@ -39,8 +39,6 @@ Internally, Here's what needs to be done:
 1. DONE: Change waste from `Sp3` to `Splayed`: will have have 4 columns, one for each suit
 1. DONE (Uses existing code): Be able to locate card in `waste` from mouse clickdown position.
 1. DONE (Uses existing code): Be able to perform move testing and operation.
-1. All of this should be similar to present waste operation, just only over 4 columns, one for each suit.
-   This should be the easiest to implement.
 
 Hence, the waste contains 4 piles, one for each suit.  Each pile is rendered as an `NS` vector growing down from the top.
 
@@ -68,7 +66,7 @@ Also would be good to write up.
 
 ### Update Naming
 
-Although I appreciate the original author's coding skill and design, I don't agree w/ his cryptic naming, especially because I think it make comprehension more challenging for newbie coders.
+Although I appreciate the original author's coding skill and design, I don't agree w/ his cryptic naming, especially because I think it makes comprehension more challenging for newbie coders.
 
 Also, I think he truncated name lengths to make code formatting line up.
 
