@@ -103,9 +103,9 @@ movesBox i = padBottom (Pad 1)
 drawUI :: GSt -> [ Widget Ext ]
 drawUI state = [ui]
   where 
-    ui = center $ setAvailableSize (120,29) 
+    ui = center $ setAvailableSize (120, 55) -- was 29
        $ board <+> rSidebar
-    title      = if hasWon state then " Nice! " else " Solitaire "
+    title      = if hasWon state then " **** Nice! **** " else "    Solitaire    "
     board      = withBorderStyle unicodeRounded
                $ borderWithLabel (str title) 
                $ drawField $ _field state
@@ -121,3 +121,6 @@ drawUI state = [ui]
             tableau    = reportExtent TableX $ rrPiles EW NS $ _table f
             foundation = reportExtent FoundX $ rrPiles NS NS $ _found f
 
+-- adjustOverallHeight :: GSt -> Int
+-- adjustOverallHeight state =
+--   20 + 
