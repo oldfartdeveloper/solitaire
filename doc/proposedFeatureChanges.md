@@ -104,5 +104,3 @@ Go wild with this one:
 Define tactics as intelligent key sequences to move cards around.  This is a primary strategy to have the game automate intelligent game playing.
 
 An idea: users will eventually start using tactics.  When a user manually uses a particular tactic, ask the user whether he'd like the intelligent command for the tactic as a shortcut.
-
-

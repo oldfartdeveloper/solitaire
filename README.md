@@ -59,6 +59,12 @@ The game layout is broken down from left to right:
 
 Note: if you find some of the cards on the right don't respond to mousedown, make your terimal window smaller.
 
+## Examples of Blocked Games
+
+* [Blocked Game #1](/doc/BlockedGameExamples/BlockedGame1.md)
+* [Blocked Game #2](/doc/BlockedGameExamples/BlockedGame2.md)
+* [Blocked Game #3](/doc/BlockedGameExamples/BlockedGame3.md)
+
 ## Links
 
 - [brick](https://hackage.haskell.org/package/brick), a Haskell terminal user

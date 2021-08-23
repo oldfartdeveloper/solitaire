@@ -15,7 +15,7 @@ Here's an example of a *probable* unsolveable card deal:
 
 Nope, this is a playable game.  Here's the finish:
 
-<img src="LockedGame2W.png" alt="Simplest Blocked Case" width="70%" height="70%">
+<img src="BlockedGame2W.png" alt="Simplest Blocked Case" width="70%" height="70%">
 
 Here are the *undo* moves back:
 
@@ -75,7 +75,7 @@ Here are the *undo* moves back:
 
 Which takes us back to the original deal:
 
-<img src="LockedGame2S.png" width="70%" alt="Interesting game start" height="70%">
+<img src="BlockedGame2S.png" width="70%" alt="Interesting game start" height="70%">
 
 And, here we start the game again:
 
@@ -129,6 +129,6 @@ And, here we start the game again:
 
 Here's the final result:
 
-<img src="LockedGame2W2.png" width="70%" alt="Game success replay" height="70%">
+<img src="BlockedGame2W2.png" width="70%" alt="Game success replay" height="70%">
 
 It's interesting as this is not quite the same result as the previous success result screen.  There's more than one road to Rome. 😬
