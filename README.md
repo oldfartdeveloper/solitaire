@@ -64,6 +64,7 @@ Note: if you find some of the cards on the right don't respond to mousedown, mak
 * [Blocked Game #1](/doc/BlockedGameExamples/BlockedGame1.md)
 * [Blocked Game #2](/doc/BlockedGameExamples/BlockedGame2.md)
 * [Blocked Game #3](/doc/BlockedGameExamples/BlockedGame3.md)
+* [Blocked Game #4](/doc/BlockedGameExamples/BlockedGame4.md)
 
 ## Links
 
