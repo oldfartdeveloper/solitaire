@@ -63,7 +63,7 @@ Move all of the *aces* and the *2s* from wherever they are to the *foundation*.
 1. Move <span style="color:red">5♦️</span> from 6♠️ to 6♣️.
 1. Move 6♠️ to the *foundation*.
 1. Move 6♣️ from <span style="color:red">7❤️</span> to <span style="color:red">7♦️</span>.
-1. Move <span style="color:red">7❤️</span> to 8♣️.
+1. Move <span style="color:red">7❤️</span> to *foundation*.
 
 ### Play out the Foundatation to get to the Q♣️
 
