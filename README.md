@@ -3,7 +3,7 @@
 > HINT: branch "work" is currently the branch you should use if you want to work
 > with the most recent working version.
 
-<img src="/doc/img/ScottSolitaireScreenShot.png" alt="first attempt at rendering facedown" width="55%" height="55%">
+<img src="* [Solitare Screen Shot](https://github.com/oldfartdeveloper/solitaire/wiki/ScottSolitaireScreenShot.png" alt="first attempt at rendering facedown" width="55%" height="55%">
 
 ## OldFartDeveloper's Intended Feature Changes
 
