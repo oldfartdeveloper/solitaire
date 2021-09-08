@@ -1,4 +1,4 @@
-# solitaire.hs
+# solitaire
 
 > HINT: branch "work" is currently the branch you should use if you want to work
 > with the most recent working version.
